@@ -1,10 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js";
+
 import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  FacebookAuthProvider
+  // onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -26,7 +28,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 auth.languageCode = "en";
-const analytics = getAnalytics(app);
+
 const provider = new GoogleAuthProvider();
 
 const googleLogin = document.getElementById("google-login-btn");
@@ -37,11 +39,31 @@ googleLogin.addEventListener("click", function () {
       const token = credential.accessToken;
 
       const user = result.user;
-console.log(user)
-window.location.href = "../sign.html";
+      console.log( "Google User",user);
+      // window.location.href = "../sign.html";
     })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+    // .catch((error) => {
+    //   const errorCode = error.code;
+    //   const errorMessage = error.message;
+    // });
 });
+
+const faceProvider = new FacebookAuthProvider();
+
+const fbLogin = document.getElementById("facebook-login-btn");
+googleLogin.addEventListener("click", function () {
+  signInWithPopup(auth, faceProvider)
+    .then((result) => {
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+
+      const user = result.user;
+      console.log( "Facebook User",user);
+      // window.location.href = "../sign.html";
+    })
+    // .catch((error) => {
+    //   const errorCode = error.code;
+    //   const errorMessage = error.message;
+    // });
+});
+
